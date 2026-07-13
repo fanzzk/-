@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イラストラノベ提案 - あなたにピッタリのライトノベルを提案</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .accent-font {
+            font-family: 'Kiwi Maru', serif;
+        }
+
+        /* アニメーション */
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* カスタムスクロールバー */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-slate-100 p-0 sm:p-4">
+
+    <!-- メインコンテナ -->
+    <div class="w-full max-w-md bg-white min-h-[100dvh] sm:min-h-[850px] sm:max-h-[880px] sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col relative border border-slate-100">
+        
+        <!-- ヘッダーエリア -->
+        <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-5 py-4 shrink-0 shadow-md z-10">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2 mx-auto sm:mx-0">
+                    <span class="p-1.5 bg-white/20 rounded-xl backdrop-blur-md">
+                        <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                    </span>
+                    <div>
+                        <h1 class="font-black text-base tracking-wider accent-font">ラノベイラスト提案サービス</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- メイン表示エリア (スクロール可能) -->
+        <main class="flex-1 overflow-y-auto p-5 relative">
+            
+            <!-- ================= 診断コンテンツ ================= -->
+            <div id="diagnose-mode" class="space-y-6">
+                
+                <!-- STEP 1: ジャンル選択 -->
+                <div id="step-1" class="fade-in space-y-5">
+                    <div class="text-center space-y-2">
+                        <span class="bg-indigo-50 text-indigo-600 text-xs px-3 py-1 rounded-full font-bold tracking-wide">STEP 01</span>
+                        <h2 class="text-xl font-black text-slate-800 accent-font">どんな物語の気分？</h2>
+                        <p class="text-xs text-slate-400">メインジャンルを1つ選んでください</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-3.5">
+                        <!-- バトル -->
+                        <button onclick="selectGenre('battle', this)" class="genre-card flex items-center p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-red-400 hover:bg-red-50/10 transition-all text-left group animate-all duration-300">
+                            <div class="p-3 bg-gradient-to-br from-red-500 to-orange-500 text-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300 w-12 h-12 flex items-center justify-center shrink-0">
+                                <i data-lucide="swords" class="w-6 h-6"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="font-black text-base text-slate-800 group-hover:text-red-600 transition-colors">バトル</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 leading-snug">異能アクション、スリリングな終末学園</p>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-red-500 transition-colors"></i>
+                        </button>
+
+                        <!-- ファンタジー -->
+                        <button onclick="selectGenre('fantasy', this)" class="genre-card flex items-center p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-indigo-400 hover:bg-indigo-50/10 transition-all text-left group animate-all duration-300">
+                            <div class="p-3 bg-gradient-to-br from-indigo-500 to-sky-500 text-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300 w-12 h-12 flex items-center justify-center shrink-0">
+                                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="font-black text-base text-slate-800 group-hover:text-indigo-600 transition-colors">ファンタジー</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 leading-snug">剣と魔法 of 王道冒険、異世界ファンタジー</p>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
+                        </button>
+
+                        <!-- 恋愛・ラブコメ -->
+                        <button onclick="selectGenre('romcom', this)" class="genre-card flex items-center p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-pink-400 hover:bg-pink-50/10 transition-all text-left group animate-all duration-300">
+                            <div class="p-3 bg-gradient-to-br from-pink-500 to-rose-500 text-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300 w-12 h-12 flex items-center justify-center shrink-0">
+                                <i data-lucide="heart" class="w-6 h-6"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="font-black text-base text-slate-800 group-hover:text-pink-600 transition-colors">恋愛・ラブコメ</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 leading-snug">じれ甘、甘い同棲、密着、賑やかなハーレム</p>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-pink-500 transition-colors"></i>
+                        </button>
+
+                        <!-- ミステリー -->
+                        <button onclick="selectGenre('mystery', this)" class="genre-card flex items-center p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-slate-500 hover:bg-slate-50/10 transition-all text-left group animate-all duration-300">
+                            <div class="p-3 bg-gradient-to-br from-slate-700 to-zinc-900 text-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300 w-12 h-12 flex items-center justify-center shrink-0">
+                                <i data-lucide="search" class="w-6 h-6"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h3 class="font-black text-base text-slate-800 group-hover:text-slate-900 transition-colors">ミステリー</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 leading-snug">日常の謎解き、本格探偵サスペンス、魔術英国</p>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-slate-900 transition-colors"></i>
+                        </button>
+                    </div>
+
+                    <div class="pt-4">
+                        <button id="next-btn-1" disabled onclick="goToStep(2)" class="w-full py-4 rounded-2xl text-white font-bold text-base shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-slate-300 cursor-not-allowed">
+                            <span>次に進む</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: サブジャンル選択 (動的) -->
+                <div id="step-2" class="fade-in hidden space-y-5">
+                    <div class="text-center space-y-2">
+                        <span class="bg-purple-50 text-purple-600 text-xs px-3 py-1 rounded-full font-bold tracking-wide">STEP 02</span>
+                        <h2 class="text-xl font-black text-slate-800 accent-font">物語を彩る要素は？</h2>
+                        <p class="text-xs text-slate-400">選択したメインジャンルの作品から、気になる要素を複数選べます</p>
+                    </div>
+
+                    <div id="subgenre-options" class="grid grid-cols-2 gap-3">
+                        <!-- 動的に選ばれたメインジャンルの作品が持つサブジャンルのみ生成 -->
+                    </div>
+
+                    <div class="pt-4 flex space-x-3">
+                        <button onclick="goToStep(1)" class="w-1/3 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-bold hover:bg-slate-50 transition-all flex items-center justify-center space-x-1.5">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span>戻る</span>
+                        </button>
+                        <button id="next-btn-2" onclick="goToStep(3)" class="w-2/3 py-4 rounded-2xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center space-x-2">
+                            <span>次に進む</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: イラストの特徴選択 -->
+                <div id="step-3" class="fade-in hidden space-y-5">
+                    <div class="text-center space-y-2">
+                        <span class="bg-pink-50 text-pink-600 text-xs px-3 py-1 rounded-full font-bold tracking-wide">STEP 03</span>
+                        <h2 class="text-xl font-black text-slate-800 accent-font">イラストやキャラの属性は？</h2>
+                        <p class="text-xs text-slate-400">好みのビジュアルスタイルやキャラ傾向を選択してください（複数選択可）</p>
+                    </div>
+
+                    <div id="illust-options" class="grid grid-cols-2 gap-3">
+                        <!-- イラスト特徴タグが動的に入る -->
+                    </div>
+
+                    <div class="pt-4 flex space-x-3">
+                        <button onclick="goToStep(2)" class="w-1/3 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-bold hover:bg-slate-50 transition-all flex items-center justify-center space-x-1.5">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            <span>戻る</span>
+                        </button>
+                        <button onclick="showResults()" class="w-2/3 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-black shadow-lg shadow-pink-200 hover:opacity-95 transition-all flex items-center justify-center space-x-2">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            <span>診断結果を見る！</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 診断結果画面 -->
+                <div id="results" class="fade-in hidden space-y-5">
+                    <div class="text-center space-y-2">
+                        <div class="inline-flex p-3 bg-gradient-to-tr from-yellow-400 to-amber-500 rounded-2xl shadow-md text-white animate-bounce">
+                            <i data-lucide="trophy" class="w-6 h-6"></i>
+                        </div>
+                        <h2 class="text-xl font-black text-slate-800 accent-font">あなたにピッタリのラノベ！</h2>
+                        <p class="text-xs text-slate-400">選択した条件に適合した、大人気の実在電撃文庫作品です</p>
+                    </div>
+
+                    <div id="results-container" class="space-y-4">
+                        <!-- 結果カードが動的に挿入されます -->
+                    </div>
+
+                    <div class="pt-6">
+                        <button onclick="restartDiagnostic()" class="w-full py-4 border-2 border-dashed border-indigo-300 rounded-2xl text-indigo-600 font-bold hover:bg-indigo-50 transition-all flex items-center justify-center space-x-2 bg-indigo-50/20">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                            <span>もう一度診断する</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ================= 詳細モーダル ================= -->
+        <div id="detail-modal" class="hidden fixed inset-0 z-50 flex justify-center items-end sm:items-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm transition-all">
+            <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[750px] animate-slide-up overflow-hidden">
+                
+                <!-- モーダルヘッダー -->
+                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                    <span id="modal-label" class="bg-indigo-100 text-indigo-700 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">電撃文庫</span>
+                    <button onclick="closeModal()" class="p-1.5 bg-slate-200/60 text-slate-600 hover:bg-slate-200 rounded-full transition-all">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- モーダルコンテンツ (スクロール可能) -->
+                <div class="flex-1 overflow-y-auto p-5 space-y-5">
+                    <div class="flex space-x-4">
+                        <!-- 表紙画像エリア -->
+                        <div id="modal-cover-placeholder" class="w-28 h-36 rounded-xl shadow-lg shrink-0 overflow-hidden relative border border-slate-100">
+                            <!-- SVGカバーアート -->
+                        </div>
+                        <!-- タイトル他基本情報 -->
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div class="space-y-1">
+                                <h3 id="modal-title" class="text-sm font-black text-slate-800 leading-snug">作品名</h3>
+                                <div class="text-xs text-slate-500 space-y-0.5 mt-2">
+                                    <p>著者: <span id="modal-author" class="font-bold text-slate-700"></span></p>
+                                    <p>イラスト: <span id="modal-illustrator" class="font-bold text-slate-700"></span></p>
+                                    <p>発売日: <span id="modal-date" class="font-bold text-slate-700"></span></p>
+                                    <p>価格: <span id="modal-price" class="font-bold text-slate-700"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- シリーズ巻数選択用タブ -->
+                    <div id="modal-volumes-container" class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">収録巻一覧</h4>
+                        <div id="modal-volume-tabs" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto p-0.5">
+                            <!-- 巻数ボタンが動的に挿入されます -->
+                        </div>
+                    </div>
+
+                    <!-- あらすじ (高さをh-48=192pxに完全固定、はみ出し時はスクロール) -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col h-48">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center space-x-1 mb-2 shrink-0">
+                            <i data-lucide="align-left" class="w-3.5 h-3.5"></i>
+                            <span id="story-volume-label">あらすじ (1巻)</span>
+                        </h4>
+                        <div class="flex-1 overflow-y-auto min-h-0 pr-1">
+                            <p id="modal-summary" class="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">あらすじ</p>
+                        </div>
+                    </div>
+
+                    <!-- 特徴タグ -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center space-x-1">
+                            <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+                            <span>タグ分類</span>
+                        </h4>
+                        <div id="modal-tags" class="flex flex-wrap gap-1.5">
+                            <!-- タグ -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- モーダルフッター -->
+                <div class="p-5 border-t border-slate-100 bg-slate-50">
+                    <button onclick="buyBookLink()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        <span>この書籍の詳細・購入（公式）</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 簡易メッセージ通知 -->
+    <div id="toast" class="hidden fixed top-6 z-50 transform -translate-x-1/2 left-1/2 bg-slate-800 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center space-x-2 transition-all duration-300">
+        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toast-msg">トーストメッセージ</span>
+    </div>
+
+    <script>
+        const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTBd0Bls1lGiRTwpu3P-ikWvHiamXJKgLe5-0P_z8NLqKdvlvsLaBU6skiK5gJu649XIJtpAEt9dALF/pub?output=csv";
+
+        // ================= 内蔵フォールバック書籍データ =================
+        const localFallbackBooks = [
+            {
+                id: 1,
+                title: "こちら、終末停滞委員会。",
+                author: "逢縁奇演",
+                illustrator: "荻pote",
+                label: "電撃文庫",
+                genres: ["battle"],
+                subgenres: ["SF", "青春", "学園", "異能"],
+                illustFeatures: ["美少女", "クール", "美麗"],
+                gradient: "from-blue-600 via-indigo-600 to-slate-800",
+                symbol: "shield",
+                volumes: [
+                    {
+                        volumeName: "1巻",
+                        releaseDate: "2024/7/10",
+                        price: "770円",
+                        coverImage: "こちら、終末停滞委員会。 -表紙画像/こちら、終末停滞員会。.jpg",
+                        summary: "デカい銃をぶっ放してセカイを護る。それが俺らの学園生活だ。実は俺らの世界は、密かに滅んでる真っ最中らしい。上野 of 不忍池に潜む異形、エッフェル塔に張りつく巨大カタツムリ、どう見ても美少女な魔王……。そんな正体も数すら不明のオカルトチックなナニカ――“終末”によって。けど世界の裏では, それに中指立てて闘ってる少年少女がいたんだ。「あはっ☆　最強美少女ひかり様の前で神様ごときが頭が高いのだわ！」「加減してください隊長、パリ市街が吹っ飛びます！　運が良ければ！」終末を停止することでなく、根絶もできず, ただ停滞させるだけ。それでも彼らは銃を取る。なぜって？　彼らにとってはこれが日常茶飯目で、毎日がお祭りで、アオハルそのものだから！"
+                    },
+                    {
+                        volumeName: "2巻",
+                        releaseDate: "2024/9/10",
+                        price: "770円",
+                        coverImage: "こちら、終末停滞委員会。 -表紙画像/こちら、終末停滞員会。2.jpg",
+                        summary: "三大学園が集う「天空競技祭」編、開幕！正式に蒼の学園に入学した心葉とＬｕｎａ。精鋭たちと己の矜持を懸けて激しくぶつかり合う！"
+                    },
+                    {
+                        volumeName: "5巻",
+                        releaseDate: "2025/12/10",
+                        price: "814円",
+                        coverImage: "こちら、終末停滞委員会. -表紙画像/こちら、終末停滞員会。5.jpg",
+                        summary: "普通の日常を愛する高校生、言万心葉。かけがえのない彼の日々に異変が起きる。世界の真相を解き明かす、日常の残酷な真実とは。"
+                    },
+                    {
+                        volumeName: "6巻",
+                        releaseDate: "2026/7/10",
+                        price: "924円",
+                        coverImage: "こちら、終末停滞委員会。 -表紙画像/こちら、終末停滞員会。6.jpg",
+                        summary: "アメリカ合衆国、陥落。アメリアに浸食され、終末停滞委員会は人類の意思を奪う行為に中指を立てる。潜入任務の切り札は――サンタ・クロース。"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "運命の人は、嫁の妹でした。",
+                author: "逢縁奇演",
+                illustrator: "ちひろ綺華",
+                label: "電撃文庫",
+                genres: ["romcom"],
+                subgenres: ["前世", "三角関係", "同棲"],
+                illustFeatures: ["かわいい", "エモい", "美少女"],
+                gradient: "from-pink-500 via-rose-500 to-red-500",
+                symbol: "heart",
+                volumes: [
+                    {
+                        volumeName: "1巻",
+                        releaseDate: "2022/7/8",
+                        price: "726円",
+                        coverImage: "運命の人は、嫁の妹でした。/運命の人は、嫁の妹でした。.jpg",
+                        summary: "結ばれるのは今世の嫁か、それとも前世で愛を誓ったその妹か！「ブラインド婚婚活」で出会った嫁の妹・獅子乃と同棲生活が始まってしまい……！"
+                    },
+                    {
+                        volumeName: "2巻",
+                        releaseDate: "2022/9/9",
+                        price: "770円",
+                        coverImage: "運命の人は、嫁の妹でした。/運命の人は、嫁の妹でした。2.jpg",
+                        summary: "嫁とその妹との三角ラブコメは、さらに斜め上に大爆走！家から追い出されていた俺は、兎羽と失った信用を取り戻せるのか！"
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "よって、初恋は証明された。",
+                author: "逆井卓馬",
+                illustrator: "遠坂あさぎ",
+                label: "電撃文庫",
+                genres: ["mystery"],
+                subgenres: ["科学", "部活", "日常の謎", "恋愛", "青春"],
+                illustFeatures: ["クール", "エモい", "美麗"],
+                gradient: "from-teal-500 via-emerald-600 to-indigo-800",
+                symbol: "calculator",
+                volumes: [
+                    {
+                        volumeName: "1巻",
+                        releaseDate: "2024/11/8",
+                        price: "770円",
+                        summary: "ほろ苦くも瑞々しい、科学と、恋と、ミステリー。生物部に捧げられた、高校生たちの切実な決断。科学を愛する高校生たちのささやかな活動記録。"
+                    },
+                    {
+                        volumeName: "2巻",
+                        releaseDate: "2025/7/10",
+                        price: "858円",
+                        summary: "理系部活×日常の謎、第二弾。生物部に入った出田たち四人が発見した、50年前の怪しげな報告書。"
+                    },
+                    {
+                        volumeName: "3巻",
+                        releaseDate: "2026/1/9",
+                        price: "858円",
+                        summary: "「理学部」全員参加の頭脳戦、開幕。科学と謎が彩る夏の青春ミステリ！"
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: "トリック・オア・デリート",
+                author: "ひなちほこ",
+                illustrator: "みきさい",
+                label: "電撃文庫",
+                genres: ["mystery", "fantasy"],
+                subgenres: ["魔術", "探偵", "英国", "ダーク", "ファンタジー"],
+                illustFeatures: ["シリアス", "クール", "美麗"],
+                gradient: "from-violet-800 via-purple-900 to-slate-950",
+                symbol: "feather",
+                volumes: [
+                    {
+                        volumeName: "1巻",
+                        releaseDate: "2025/12/10",
+                        price: "814円",
+                        summary: "誰も彼女を覚えていない――魔術的殺人に抗う十九世紀英国ファンタジー魔術都市ロンドン。"
+                    },
+                    {
+                        volumeName: "2巻",
+                        releaseDate: "2026/7/10",
+                        price: "1012円",
+                        summary: "英国を騒がす連続魔術師殺害事件。容疑者は――アリシア・ヴァーミリオン。"
+                    }
+                ]
+            },
+            {
+                id: 9,
+                title: "男女の友情は成立する？（いや、しないっ!!）",
+                author: "七菜なな",
+                illustrator: "Parum",
+                label: "電撃文庫",
+                genres: ["romcom"],
+                subgenres: ["男女友情", "両片想い", "恋愛", "友達関係"],
+                illustFeatures: ["かわいい", "エモい", "美少女"],
+                gradient: "from-rose-400 via-pink-500 to-orange-400",
+                symbol: "heart-handshake",
+                volumes: [
+                    {
+                        volumeName: "Flag 1",
+                        releaseDate: "2021/1/9",
+                        price: "693円",
+                        summary: "永遠の友情を誓った親友ふたりが――ふとしたきっかけで〈両片想い〉に!?"
+                    },
+                    {
+                        volumeName: "Flag 2",
+                        releaseDate: "2021/4/9",
+                        price: "737円",
+                        summary: "永遠の友情を誓った親友ふたりに――初恋少女の変＆恋するリア充軍団の乱！"
+                    },
+                    {
+                        volumeName: "Flag 3",
+                        releaseDate: "2021/8/6",
+                        price: "715円",
+                        summary: "永遠の友情を誓った親友ふたりは――いつまでもこの時間が続くと信じてた。"
+                    },
+                    {
+                        volumeName: "Flag 4〈上〉",
+                        releaseDate: "2021/12/10",
+                        price: "693円",
+                        summary: "運命の初恋を捧げた親友ふたりが――お泊り旅行で〈友情〉を試される!?"
+                    },
+                    {
+                        volumeName: "Flag 4〈下〉",
+                        releaseDate: "2022/3/10",
+                        price: "693円",
+                        summary: "運命の初恋を捧げた親友ふたりが――互いの夢と理想を賭けて真夏の大勝負！"
+                    },
+                    {
+                        volumeName: "Flag 12",
+                        releaseDate: "2025/11/08",
+                        price: "880円",
+                        summary: "永遠の友情を誓った〈運命共同体〉は――膿んだ箱庭からの脱却なるか？"
+                    }
+                ]
+            }
+        ];
+
+        // ランタイム書籍データベース
+        let books = [];
+
+        // 診断用ステート
+        let selectedGenre = null;
+        let selectedSubgenres = [];
+        let selectedIllustFeatures = [];
+        let currentStep = 1;
+        let currentModalBook = null;
+        let activeVolumeIndex = 0; 
+
+        window.onload = function() {
+            // ローカルデータを規格化
+            normalizeLocalBooks();
+            
+            // スプレッドシートからフェッチを試みる (UI非表示で実行)
+            fetchSpreadsheetData();
+            try {
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch (e) {
+                console.error("Lucide setup error:", e);
+            }
+        };
+
+        // ================= 規格化・パース処理 =================
+        
+        // ローカル予備データを一括で規格化
+        function normalizeLocalBooks() {
+            localFallbackBooks.forEach(book => {
+                book.volumes.forEach(vol => {
+                    vol.volumeName = formatVolumeName(vol.volumeName);
+                });
+                sortBookVolumes(book);
+            });
+            books = [...localFallbackBooks];
+        }
+
+        // 入力文字列から「数字」と「上/下」をダイレクト検出し、「N巻」または「N巻上/下」に完全統一
+        function formatVolumeName(str) {
+            if (!str) return "1巻";
+            let trimmed = str.trim();
+            const toHalfWidth = (s) => s.replace(/[０-９]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0xFEE0));
+
+            const numMatch = trimmed.match(/[0-9０-９]+/);
+            if (!numMatch) {
+                let sub = "";
+                if (trimmed.includes("上")) sub = "上";
+                if (trimmed.includes("下")) sub = "下";
+                return sub ? `1巻${sub}` : trimmed;
+            }
+
+            const num = parseInt(toHalfWidth(numMatch[0]), 10);
+            
+            let sub = "";
+            if (trimmed.includes("上")) {
+                sub = "上";
+            } else if (trimmed.includes("下")) {
+                sub = "下";
+            }
+
+            return `${num}巻${sub}`;
+        }
+
+        // タイトルに潜む固有表現の抽出、および親シリーズ名への分離
+        function parseVolumeAndSeriesTitle(rawTitle) {
+            let seriesTitle = rawTitle.trim();
+            let volumeName = "";
+
+            const toHalfWidth = (s) => s.replace(/[０-９]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0xFEE0));
+
+            // 1. "不可解" パターン
+            const patternFukakai = /(.*?)\s*不可解\s*([0-9０-９]+)/i;
+            const matchFukakai = seriesTitle.match(patternFukakai);
+            if (matchFukakai) {
+                seriesTitle = matchFukakai[1].trim();
+                const num = parseInt(toHalfWidth(matchFukakai[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                return { seriesTitle, volumeName };
+            }
+
+            // 2. "Flag" パターン
+            const patternFlag = /(.*?)\s*Flag\s*([0-9０-９]+)/i;
+            const matchFlag = seriesTitle.match(patternFlag);
+            if (matchFlag) {
+                seriesTitle = matchFlag[1].trim();
+                const num = parseInt(toHalfWidth(matchFlag[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                if (seriesTitle.endsWith('.')) {
+                    seriesTitle = seriesTitle.slice(0, -1).trim();
+                }
+                return { seriesTitle, volumeName };
+            }
+
+            // 3. "理学部ノート" パターン
+            const patternRigakubu = /(.*?)\s*[-－]?\s*(?:デルタとガンマの)?理学部ノート\s*([0-9０-９]+)/i;
+            const matchRigakubu = seriesTitle.match(patternRigakubu);
+            if (matchRigakubu) {
+                seriesTitle = matchRigakubu[1].trim();
+                const num = parseInt(toHalfWidth(matchRigakubu[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                if (seriesTitle.includes("よって、初恋は証明された。")) {
+                    seriesTitle = "よって、初恋は証明された。";
+                }
+                return { seriesTitle, volumeName };
+            }
+
+            // 4. "Vol." パターン
+            const patternVol = /(.*?)\s*Vol\.\s*([0-9０-９]+)/i;
+            const matchVol = seriesTitle.match(patternVol);
+            if (matchVol) {
+                seriesTitle = matchVol[1].trim();
+                const num = parseInt(toHalfWidth(matchVol[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                return { seriesTitle, volumeName };
+            }
+
+            // 5. "巻" パターン
+            const patternKan = /(.*?)\s*([0-9０-９]+)\s*巻/i;
+            const matchKan = seriesTitle.match(patternKan);
+            if (matchKan) {
+                seriesTitle = matchKan[1].trim();
+                const num = parseInt(toHalfWidth(matchKan[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                return { seriesTitle, volumeName };
+            }
+
+            // 6. 単なる数字付きパターン
+            const patternSimple = /(.*?)\s*([0-9０-９]+)\s*(?:[〈(（]?([上下])[〉)）]?)?$/;
+            const matchSimple = seriesTitle.match(patternSimple);
+            if (matchSimple) {
+                seriesTitle = matchSimple[1].trim();
+                const num = parseInt(toHalfWidth(matchSimple[2]), 10);
+                let sub = "";
+                if (rawTitle.includes("上")) sub = "上";
+                if (rawTitle.includes("下")) sub = "下";
+                volumeName = `${num}巻${sub}`;
+                return { seriesTitle, volumeName };
+            }
+
+            return { seriesTitle, volumeName: "" };
+        }
+
+        // 上下巻ソート比較
+        function sortBookVolumes(bookObj) {
+            bookObj.volumes.sort((a, b) => {
+                const numA = parseInt((a.volumeName.match(/\d+/) || [0])[0], 10);
+                const numB = parseInt((b.volumeName.match(/\d+/) || [0])[0], 10);
+                if (numA !== numB) {
+                    return numA - numB;
+                }
+                const isAUp = a.volumeName.includes('上');
+                const isBUp = b.volumeName.includes('上');
+                const isADown = a.volumeName.includes('下');
+                const isBDown = b.volumeName.includes('下');
+                
+                if (isAUp && !isBUp) return -1;
+                if (!isAUp && isBUp) return 1;
+                if (isADown && !isBDown) return 1;
+                if (!isADown && isBDown) return -1;
+                return 0;
+            });
+        }
+
+        // CSVパース
+        function parseCSVToMatrix(csvText) {
+            const result = [];
+            let row = [""];
+            let inQuotes = false;
+
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        row[row.length - 1] += '"';
+                        i++; 
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    row.push('');
+                } else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    if (char === '\r' && nextChar === '\n') i++; 
+                    result.push(row);
+                    row = [''];
+                } else {
+                    row[row.length - 1] += char;
+                }
+            }
+            if (row.length > 1 || row[0] !== '') {
+                result.push(row);
+            }
+            return result;
+        }
+
+        function fixCoverImageUrl(url) {
+            if (!url) return "";
+            let trimmed = url.trim();
+
+            if (trimmed.includes("github.com") && trimmed.includes("/blob/")) {
+                return trimmed.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+            }
+
+            if (trimmed.includes("drive.google.com") && trimmed.includes("/file/d/")) {
+                const match = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                }
+            }
+            return trimmed;
+        }
+
+        // ================= スプレッドシート同期処理 =================
+        async function fetchSpreadsheetData() {
+            if (!SPREADSHEET_CSV_URL || SPREADSHEET_CSV_URL.trim() === "") {
+                return;
+            }
+
+            try {
+                const response = await fetch(SPREADSHEET_CSV_URL);
+                if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+                const csvText = await response.text();
+                
+                const rawMatrix = parseCSVToMatrix(csvText);
+                if (rawMatrix.length < 2) {
+                    throw new Error("スプレッドシートデータが不十分です。");
+                }
+
+                const headerDefinitions = {
+                    id: ["id", "ID", "作品ID", "作品id", "番号"],
+                    title: ["title", "作品名", "タイトル", "書名"],
+                    author: ["author", "著者", "作者", "ライター"],
+                    illustrator: ["illustrator", "イラスト", "イラストレーター", "絵", "絵師"],
+                    label: ["label", "レーベル", "文庫"],
+                    genres: ["genres", "メインジャンル", "ジャンル", "大分類"],
+                    subgenres: ["subgenres", "サブジャンル", "特徴", "属性", "要素"],
+                    illustFeatures: ["illustFeatures", "イラスト特徴", "イラストの特徴", "キャラ属性", "ビジュアル"],
+                    gradient: ["gradient", "グラデーション", "背景グラデーション", "色", "背景色"],
+                    symbol: ["symbol", "アイコン", "シンボル", "マーク"],
+                    releaseDate: ["releaseDate", "発売日", "刊行日"],
+                    price: ["price", "価格", "値段", "定価"],
+                    coverImage: ["coverImage", "表紙画像", "画像URL", "画像リンク", "カバー画像", "画像"],
+                    summary: ["summary", "あらすじ", "詳細", "概要", "ストーリー"],
+                    volumeName: ["volumeName", "巻数名", "巻数", "巻名", "巻表記"]
+                };
+
+                const rawHeaders = rawMatrix[0].map(h => h.trim());
+                const headerIndices = {};
+
+                Object.keys(headerDefinitions).forEach(key => {
+                    const synonyms = headerDefinitions[key];
+                    const idx = rawHeaders.findIndex(header => synonyms.includes(header));
+                    if (idx !== -1) {
+                        headerIndices[key] = idx;
+                    }
+                });
+
+                if (!headerIndices.id && !headerIndices.title) {
+                    throw new Error("必須ヘッダーが検出できませんでした。");
+                }
+
+                const dataRows = rawMatrix.slice(1);
+                const tempBooksMap = new Map();
+
+                dataRows.forEach((row) => {
+                    const titleVal = headerIndices.title !== undefined ? row[headerIndices.title] : null;
+                    const idVal = headerIndices.id !== undefined ? row[headerIndices.id] : null;
+                    if (!titleVal && !idVal) return;
+
+                    const bookId = idVal ? parseInt(idVal.trim(), 10) : (tempBooksMap.size + 1);
+                    if (isNaN(bookId)) return;
+
+                    const rawTitle = titleVal ? titleVal.trim() : "タイトル未設定";
+                    const parsed = parseVolumeAndSeriesTitle(rawTitle);
+                    const seriesTitle = parsed.seriesTitle;
+
+                    let volumeName = (headerIndices.volumeName !== undefined && row[headerIndices.volumeName]) ? row[headerIndices.volumeName].trim() : parsed.volumeName;
+                    volumeName = formatVolumeName(volumeName);
+
+                    const author = (headerIndices.author !== undefined && row[headerIndices.author]) ? row[headerIndices.author].trim() : "著者不明";
+                    const illustrator = (headerIndices.illustrator !== undefined && row[headerIndices.illustrator]) ? row[headerIndices.illustrator].trim() : "イラストレーター不明";
+                    const label = (headerIndices.label !== undefined && row[headerIndices.label]) ? row[headerIndices.label].trim() : "電撃文庫";
+                    const genres = (headerIndices.genres !== undefined && row[headerIndices.genres]) ? row[headerIndices.genres].split(/[,，、]/).map(s => s.trim().toLowerCase()).filter(Boolean) : ["romcom"];
+                    const subgenres = (headerIndices.subgenres !== undefined && row[headerIndices.subgenres]) ? row[headerIndices.subgenres].split(/[,，、]/).map(s => s.trim()).filter(Boolean) : [];
+                    const illustFeatures = (headerIndices.illustFeatures !== undefined && row[headerIndices.illustFeatures]) ? row[headerIndices.illustFeatures].split(/[,，、]/).map(s => s.trim()).filter(Boolean) : [];
+                    const gradient = (headerIndices.gradient !== undefined && row[headerIndices.gradient]) ? row[headerIndices.gradient].trim() : "from-indigo-600 via-purple-600 to-pink-600";
+                    const symbol = (headerIndices.symbol !== undefined && row[headerIndices.symbol]) ? row[headerIndices.symbol].trim() : "book-open";
+
+                    const releaseDate = (headerIndices.releaseDate !== undefined && row[headerIndices.releaseDate]) ? row[headerIndices.releaseDate].trim() : "発売日未定";
+                    const price = (headerIndices.price !== undefined && row[headerIndices.price]) ? row[headerIndices.price].trim() : "価格未定";
+                    const rawCoverImage = (headerIndices.coverImage !== undefined && row[headerIndices.coverImage]) ? row[headerIndices.coverImage].trim() : "";
+                    const coverImage = fixCoverImageUrl(rawCoverImage);
+                    const summary = (headerIndices.summary !== undefined && row[headerIndices.summary]) ? row[headerIndices.summary].trim() : "あらすじ情報がありません。";
+
+                    if (!tempBooksMap.has(bookId)) {
+                        tempBooksMap.set(bookId, {
+                            id: bookId,
+                            title: seriesTitle, 
+                            author: author,
+                            illustrator: illustrator,
+                            label: label,
+                            genres: genres,
+                            subgenres: subgenres,
+                            illustFeatures: illustFeatures,
+                            gradient: gradient,
+                            symbol: symbol,
+                            volumes: []
+                        });
+                    }
+
+                    const bookObj = tempBooksMap.get(bookId);
+                    
+                    let finalVolumeName = volumeName ? volumeName.trim() : "";
+                    if (finalVolumeName === "") {
+                        const nextIndex = bookObj.volumes.length + 1;
+                        finalVolumeName = nextIndex + "巻";
+                    }
+
+                    const isVolDuplicate = bookObj.volumes.some(v => v.volumeName === finalVolumeName);
+                    if (isVolDuplicate) {
+                        const nextIndex = bookObj.volumes.length + 1;
+                        finalVolumeName = `${nextIndex}巻`;
+                    }
+
+                    bookObj.volumes.push({
+                        volumeName: finalVolumeName, 
+                        releaseDate: releaseDate,
+                        price: price,
+                        coverImage: coverImage,
+                        summary: summary
+                    });
+                });
+
+                tempBooksMap.forEach(bookObj => {
+                    sortBookVolumes(bookObj);
+                });
+
+                const parsedBooks = Array.from(tempBooksMap.values());
+                if (parsedBooks.length > 0) {
+                    books = parsedBooks;
+                    showToast("📡 最新の書籍情報を連動取得しました！");
+                    if (document.getElementById('results').classList.contains('hidden') === false) {
+                        showResults();
+                    }
+                }
+
+            } catch (error) {
+                console.warn("Spreadsheet connection skipped or failed, using local database.", error);
+            }
+        }
+
+        // ================= 画像エラー処理 =================
+        window.handleImageLoadError = function(img) {
+            img.style.display = 'none';
+            const fallbackEl = img.nextElementSibling;
+            if (fallbackEl) {
+                fallbackEl.classList.remove('hidden');
+                fallbackEl.classList.add('flex');
+            }
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                document.getElementById('toast-msg').textContent = msg;
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // ================= 診断コントロール =================
+        window.goToStep = function(step) {
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            currentStep = step;
+
+            if (step === 2) {
+                renderSubgenreOptions();
+            } else if (step === 3) {
+                renderIllustOptions();
+            }
+        };
+
+        window.selectGenre = function(genre, element) {
+            selectedGenre = genre;
+            selectedSubgenres = []; 
+
+            document.querySelectorAll('.genre-card').forEach(card => {
+                card.classList.remove('border-red-500', 'bg-red-50/20', 'border-indigo-500', 'bg-indigo-50/20', 'border-pink-500', 'bg-pink-50/20', 'border-slate-500', 'bg-slate-50/20');
+                card.classList.add('border-slate-100', 'bg-white');
+            });
+
+            element.classList.remove('border-slate-100', 'bg-white');
+            if (genre === 'battle') element.classList.add('border-red-500', 'bg-red-50/20');
+            if (genre === 'fantasy') element.classList.add('border-indigo-500', 'bg-indigo-50/20');
+            if (genre === 'romcom') element.classList.add('border-pink-500', 'bg-pink-50/20');
+            if (genre === 'mystery') element.classList.add('border-slate-500', 'bg-slate-50/20');
+
+            const nextBtn = document.getElementById('next-btn-1');
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.className = "w-full py-4 rounded-2xl text-white font-black text-base shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 cursor-pointer";
+            }
+        };
+
+        // カバー画像HTML生成 (1巻固定処理含む)
+        function generateBookCoverHTML(book, isModal = false, volumeIndex = null) {
+            const sizeClasses = isModal ? "w-full h-full" : "w-20 h-28 sm:w-24 sm:h-32";
+            let coverUrl = "";
+            let volumeLabel = "";
+            
+            // 診断結果一覧では常に「最初の1巻目」を表示。モーダル連動時は選択された巻を表示。
+            const idx = (volumeIndex !== null) ? volumeIndex : 0;
+            
+            if (book.volumes[idx]) {
+                coverUrl = book.volumes[idx].coverImage;
+                volumeLabel = book.volumes[idx].volumeName;
+            } else if (book.volumes[0]) {
+                coverUrl = book.volumes[0].coverImage;
+                volumeLabel = book.volumes[0].volumeName;
+            }
+
+            if (coverUrl && coverUrl.trim() !== "") {
+                return `
+                    <div class="${sizeClasses} shrink-0 rounded-xl shadow-lg overflow-hidden relative border border-slate-100 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center bg-gray-50">
+                        <img src="${coverUrl}" 
+                             data-title="${book.title}" 
+                             data-vol="${volumeLabel}" 
+                             class="w-full h-full object-cover z-10" 
+                             onerror="window.handleImageLoadError(this)" />
+                        
+                        <!-- 読み込み不可の際に最前面化する美しいCSS予備カバー -->
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br ${book.gradient} text-white flex-col justify-between p-2.5 hidden z-0">
+                            <div class="absolute -right-6 -bottom-6 w-16 h-16 rounded-full bg-white/10 blur-sm"></div>
+                            <div class="absolute -left-6 -top-6 w-20 h-20 rounded-full bg-white/5 blur-md"></div>
+                            <span class="bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded text-[7px] tracking-wide font-black uppercase text-center self-start">${book.label}</span>
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20">
+                                <i data-lucide="${book.symbol}" class="w-12 h-12"></i>
+                            </div>
+                            <div class="z-10 mt-1">
+                                <p class="text-[8.5px] font-black leading-tight line-clamp-3 text-white/95 accent-font drop-shadow-sm">${book.title}</p>
+                            </div>
+                            <div class="z-10">
+                                <p class="text-[6.5px] text-white/70 line-clamp-1 font-bold">著者: ${book.author}</p>
+                                <p class="text-[6.5px] text-white/70 line-clamp-1 font-bold">絵: ${book.illustrator}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="${sizeClasses} shrink-0 bg-gradient-to-br ${book.gradient} text-white flex flex-col justify-between p-2.5 rounded-xl shadow-md relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute -right-6 -bottom-6 w-16 h-16 rounded-full bg-white/10 blur-sm"></div>
+                    <div class="absolute -left-6 -top-6 w-20 h-20 rounded-full bg-white/5 blur-md"></div>
+                    <span class="bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded text-[7px] tracking-wide font-black uppercase text-center self-start">${book.label}</span>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20">
+                        <i data-lucide="${book.symbol}" class="w-12 h-12"></i>
+                    </div>
+                    <div class="z-10 mt-1">
+                        <p class="text-[8.5px] font-black leading-tight line-clamp-3 text-white/95 accent-font drop-shadow-sm">${book.title}</p>
+                    </div>
+                    <div class="z-10">
+                        <p class="text-[6.5px] text-white/70 line-clamp-1 font-bold">著者: ${book.author}</p>
+                        <p class="text-[6.5px] text-white/70 line-clamp-1 font-bold">絵: ${book.illustrator}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSubgenreOptions() {
+            const container = document.getElementById('subgenre-options');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const filteredBooks = books.filter(book => book.genres.includes(selectedGenre));
+            const subgenreSet = new Set();
+            filteredBooks.forEach(book => {
+                book.subgenres.forEach(sub => subgenreSet.add(sub));
+            });
+
+            const options = Array.from(subgenreSet);
+
+            if (options.length === 0) {
+                container.className = "flex flex-col items-center justify-center py-8 text-center col-span-2 space-y-3";
+                container.innerHTML = `
+                    <div class="p-3 bg-indigo-50 text-indigo-500 rounded-full">
+                        <i data-lucide="info" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-700">このジャンルの作品は現在準備中です</p>
+                        <p class="text-xs text-slate-400 mt-1">そのまま「次に進む」を押してください。</p>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+
+            container.className = "grid grid-cols-2 gap-3";
+
+            options.forEach(tag => {
+                const isSelected = selectedSubgenres.includes(tag);
+                const button = document.createElement('button');
+                button.setAttribute('data-tag', tag);
+                button.onclick = () => toggleSubgenre(tag, button);
+                
+                if (isSelected) {
+                    button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm";
+                } else {
+                    button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-white border-slate-200 text-slate-600 hover:bg-slate-50";
+                }
+                
+                let iconName = 'hash';
+                if (tag === 'SF') iconName = 'cpu';
+                if (tag === '青春') iconName = 'sparkles';
+                if (tag === '学園') iconName = 'graduation-cap';
+                if (tag === '異能') iconName = 'zap';
+                if (tag === '前世') iconName = 'history';
+                if (tag === '三角関係') iconName = 'triangle';
+                if (tag === '同棲' || tag === '同居' || tag === '同居系') iconName = 'home';
+                if (tag === 'じれ甘') iconName = 'heart';
+                if (tag === '美少女') iconName = 'star';
+                if (tag === '友達関係') iconName = 'smile';
+                if (tag === '距離感バグ') iconName = 'shrink';
+                if (tag === '年齢逆転') iconName = 'timer-reset';
+                if (tag === '教師×生徒') iconName = 'book-open';
+                if (tag === '科学') iconName = 'flask';
+                if (tag === '部活') iconName = 'trophy';
+                if (tag === '日常の謎') iconName = 'help-circle';
+                if (tag === '恋愛') iconName = 'heart';
+                if (tag === '魔術') iconName = 'wand';
+                if (tag === '探偵') iconName = 'search';
+                if (tag === '英国') iconName = 'map-pin';
+                if (tag === 'ダーク') iconName = 'moon';
+                if (tag === 'ファンタジー') iconName = 'sparkles';
+                if (tag === 'エルフ') iconName = 'flower-2';
+                if (tag === '男女友情') iconName = 'users';
+                if (tag === '両片想い') iconName = 'heart-pulse';
+                if (tag === '義妹') iconName = 'baby';
+                if (tag === '家族') iconName = 'users';
+                if (tag === 'ハーレム') iconName = 'heart-handshake';
+
+                button.innerHTML = `
+                    <i data-lucide="${iconName}" class="w-3.5 h-3.5"></i>
+                    <span>${tag}</span>
+                `;
+                container.appendChild(button);
+            });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        window.toggleSubgenre = function(tag, button) {
+            const index = selectedSubgenres.indexOf(tag);
+            if (index > -1) {
+                selectedSubgenres.splice(index, 1);
+                button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-white border-slate-200 text-slate-600 hover:bg-slate-50";
+            } else {
+                selectedSubgenres.push(tag);
+                button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm";
+            }
+        };
+
+        function renderIllustOptions() {
+            const container = document.getElementById('illust-options');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const options = ["美少女", "クール", "美麗", "かわいい", "エモい", "賑やか", "ワイルド", "コミカル", "シリアス"];
+
+            options.forEach(tag => {
+                const isSelected = selectedIllustFeatures.includes(tag);
+                const button = document.createElement('button');
+                button.onclick = () => toggleIllustFeature(tag, button);
+                
+                if (isSelected) {
+                    button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-pink-50 border-pink-500 text-pink-700 shadow-sm";
+                } else {
+                    button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-white border-slate-200 text-slate-600 hover:bg-slate-50";
+                }
+
+                let iconName = 'hash';
+                if (tag === '美少女') iconName = 'star';
+                if (tag === 'クール') iconName = 'wind';
+                if (tag === '美麗') iconName = 'sparkles';
+                if (tag === 'かわいい') iconName = 'heart';
+                if (tag === 'エモい') iconName = 'sun';
+                if (tag === '賑やか') iconName = 'party-popper';
+                if (tag === 'シリアス') iconName = 'eye-off';
+                if (tag === 'コミカル') iconName = 'laugh';
+                if (tag === 'ワイルド') iconName = 'zap';
+
+                button.innerHTML = `
+                    <i data-lucide="${iconName}" class="w-3.5 h-3.5"></i>
+                    <span>${tag}</span>
+                `;
+                container.appendChild(button);
+            });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        window.toggleIllustFeature = function(tag, button) {
+            const index = selectedIllustFeatures.indexOf(tag);
+            if (index > -1) {
+                selectedIllustFeatures.splice(index, 1);
+                button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-white border-slate-200 text-slate-600 hover:bg-slate-50";
+            } else {
+                selectedIllustFeatures.push(tag);
+                button.className = "p-3 py-2.5 rounded-xl border text-xs font-bold transition-all text-center flex items-center justify-center space-x-1.5 bg-pink-50 border-pink-500 text-pink-700 shadow-sm";
+            }
+        };
+
+        // ================= 診断結果算出・表示 =================
+        window.showResults = function() {
+            document.getElementById('step-3').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+
+            const resultsContainer = document.getElementById('results-container');
+            if (!resultsContainer) return;
+            resultsContainer.innerHTML = '';
+
+            const finalBooks = books.filter(book => {
+                const isGenreMatch = book.genres.includes(selectedGenre);
+                const isSubgenreMatch = selectedSubgenres.length === 0 || 
+                    selectedSubgenres.some(tag => book.subgenres.includes(tag));
+                const illustFeatures = book.illustFeatures || [];
+                const isIllustMatch = selectedIllustFeatures.length === 0 || 
+                    selectedIllustFeatures.some(tag => illustFeatures.includes(tag));
+
+                return isGenreMatch && isSubgenreMatch && isIllustMatch;
+            });
+
+            if (finalBooks.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-12 px-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                        <div class="p-3 bg-amber-50 text-amber-500 rounded-full inline-block">
+                            <i data-lucide="frown" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-sm">マッチする作品が見つかりませんでした</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            条件を変えて、もう一度お試しください。
+                        </p>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+
+            let scoredBooks = finalBooks.map(book => {
+                let score = 0;
+                if (book.genres.includes(selectedGenre)) score += 15;
+                const matchedSub = book.subgenres.filter(tag => selectedSubgenres.includes(tag)).length;
+                score += matchedSub * 4;
+                const illustFeatures = book.illustFeatures || [];
+                const matchedIllust = illustFeatures.filter(tag => selectedIllustFeatures.includes(tag)).length;
+                score += matchedIllust * 3;
+                return { book, score };
+            });
+
+            scoredBooks.sort((a, b) => b.score - a.score);
+
+            scoredBooks.forEach(({ book, score }) => {
+                const card = createBookCard(book, score);
+                resultsContainer.appendChild(card);
+            });
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        function createBookCard(book, score) {
+            const card = document.createElement('div');
+            card.onclick = () => openModal(book);
+            card.className = "flex bg-white p-4 rounded-2xl border border-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer relative group";
+
+            const volCount = book.volumes.length;
+            const volLabel = volCount > 1 ? `（全${volCount}巻収録）` : `（単巻収録）`;
+
+            const baseVol = book.volumes[0] || { summary: 'あらすじ情報読込中...' };
+            const tagsHTML = book.subgenres.map(sub => `
+                <span class="bg-slate-50 text-slate-500 text-[10px] px-2 py-0.5 rounded-md font-bold">#${sub}</span>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="relative flex w-full space-x-3.5">
+                    ${generateBookCoverHTML(book, false, 0)}
+                    <div class="flex-1 flex flex-col justify-between py-1 min-w-0 pr-6">
+                        <div class="space-y-1">
+                            <h3 class="font-black text-xs text-slate-800 leading-snug line-clamp-2 pr-12 group-hover:text-indigo-600 transition-colors">${book.title} <span class="text-[10px] text-indigo-500 font-bold">${volLabel}</span></h3>
+                            <p class="text-[10px] text-slate-400">著者: <span class="font-bold text-slate-600">${book.author}</span> / 絵: <span class="font-bold text-slate-600">${book.illustrator}</span></p>
+                        </div>
+                        <p class="text-[10px] text-slate-500 line-clamp-2 mt-1 leading-normal bg-slate-50/50 p-1.5 rounded-lg">${baseVol.summary}</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            ${tagsHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        window.restartDiagnostic = function() {
+            selectedGenre = null;
+            selectedSubgenres = [];
+            selectedIllustFeatures = [];
+            currentStep = 1;
+
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-3').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+
+            document.querySelectorAll('.genre-card').forEach(card => {
+                card.classList.remove('border-red-500', 'bg-red-50/20', 'border-indigo-500', 'bg-indigo-50/20', 'border-pink-500', 'bg-pink-50/20', 'border-slate-500', 'bg-slate-50/20');
+                card.classList.add('border-slate-100', 'bg-white');
+            });
+
+            const nextBtn = document.getElementById('next-btn-1');
+            if (nextBtn) {
+                nextBtn.disabled = true;
+                nextBtn.className = "w-full py-4 rounded-2xl text-white font-black text-base shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-slate-300 cursor-not-allowed";
+            }
+        };
+
+        // ================= 詳細表示モーダル =================
+        window.openModal = function(book) {
+            currentModalBook = book;
+            activeVolumeIndex = 0; 
+            
+            const modal = document.getElementById('detail-modal');
+            if (!modal) return;
+            
+            document.getElementById('modal-title').textContent = book.title;
+            document.getElementById('modal-author').textContent = book.author;
+            document.getElementById('modal-illustrator').textContent = book.illustrator;
+            
+            const volTabsContainer = document.getElementById('modal-volume-tabs');
+            if (volTabsContainer) {
+                volTabsContainer.innerHTML = '';
+                book.volumes.forEach((vol, index) => {
+                    const btn = document.createElement('button');
+                    btn.onclick = () => selectVolumeInModal(index);
+                    btn.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                        index === 0 ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    }`;
+                    btn.textContent = vol.volumeName;
+                    volTabsContainer.appendChild(btn);
+                });
+            }
+
+            loadVolumeData(0);
+
+            const tagsContainer = document.getElementById('modal-tags');
+            if (tagsContainer) {
+                tagsContainer.innerHTML = '';
+                const allTags = [...book.subgenres, ...(book.illustFeatures || [])];
+                allTags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = "bg-indigo-50 text-indigo-600 text-[10px] px-2.5 py-1 rounded-full font-bold";
+                    span.textContent = `#${tag}`;
+                    tagsContainer.appendChild(span);
+                });
+            }
+
+            modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        window.selectVolumeInModal = function(index) {
+            activeVolumeIndex = index;
+            
+            const volTabsContainer = document.getElementById('modal-volume-tabs');
+            if (volTabsContainer) {
+                const tabs = volTabsContainer.children;
+                for (let i = 0; i < tabs.length; i++) {
+                    if (i === index) {
+                        tabs[i].className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all border bg-indigo-600 text-white border-indigo-600 shadow-sm";
+                    } else {
+                        tabs[i].className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all border bg-white text-slate-600 border-slate-200 hover:bg-slate-50";
+                    }
+                }
+            }
+
+            loadVolumeData(index);
+        };
+
+        function loadVolumeData(index) {
+            if (!currentModalBook || !currentModalBook.volumes[index]) return;
+            
+            const vol = currentModalBook.volumes[index];
+            document.getElementById('modal-date').textContent = vol.releaseDate;
+            document.getElementById('modal-price').textContent = vol.price;
+            document.getElementById('modal-summary').textContent = cleanText(vol.summary);
+            document.getElementById('story-volume-label').textContent = `あらすじ (${vol.volumeName})`;
+
+            const coverPlaceholder = document.getElementById('modal-cover-placeholder');
+            if (coverPlaceholder) {
+                coverPlaceholder.innerHTML = generateBookCoverHTML(currentModalBook, true, index);
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        }
+
+        function cleanText(text) {
+            if (!text) return "";
+            return text.replace(/\\n/g, '\n').replace(/\r/g, '').trim();
+        }
+
+        window.closeModal = function() {
+            const modal = document.getElementById('detail-modal');
+            if (modal) modal.classList.add('hidden');
+            currentModalBook = null;
+        };
+
+        window.buyBookLink = function() {
+            if (!currentModalBook) return;
+            const vol = currentModalBook.volumes[activeVolumeIndex] || currentModalBook.volumes[0];
+            const encodedTitle = encodeURIComponent(currentModalBook.title + " " + vol.volumeName);
+            const searchUrl = `https://dengekibunko.jp/product/search-list.html?key=${encodedTitle}`;
+            window.open(searchUrl, '_blank');
+        };
+
+    </script>
+</body>
+</html>
